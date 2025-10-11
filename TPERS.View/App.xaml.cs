@@ -1,4 +1,6 @@
-﻿namespace TPERS.View
+﻿using TPERS.View.Pages.Principal;
+
+namespace TPERS.View
 {
     public partial class App : Application
     {
@@ -9,7 +11,8 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            return new Window(new NavigationPage(new ProcessView()));
+            //return new Window(new AppShell());
         }
     }
 }

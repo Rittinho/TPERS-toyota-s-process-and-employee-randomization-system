@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TPERS.View.Pages.Principal.ProcessView"
+             xmlns:icons="clr-namespace:TPERS.View.Services.Icons"
+             xmlns:toolkkits="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:components="clr-namespace:TPERS.View.Pages.Components"
+             NavigationPage.HasNavigationBar="False"
+             Title="ProcessView">
+
+    <AbsoluteLayout>
+
+        <Border BackgroundColor="#363636"
+                StrokeThickness="0"
+                StrokeShape="14"
+                AbsoluteLayout.LayoutBounds="0.973958333333333,0.5,0.9026041666666667,0.98"
+                AbsoluteLayout.LayoutFlags="All">
+
+            <AbsoluteLayout>
+                
+                <Border AbsoluteLayout.LayoutBounds="0,1,0.41200230813618,1"
+                        AbsoluteLayout.LayoutFlags="All"
+                        StrokeShape="14"
+                        StrokeThickness="0"
+                        BackgroundColor="#4DA3FF">
+
+                    <ScrollView>
+                        
+                        <VerticalStackLayout Spacing="10" Padding="10" VerticalOptions="Center">
+
+                            <Label Text="Processos existentes" 
+                                   FontSize="64" 
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"/>
+
+                            <CollectionView>
+
+                            </CollectionView>
+
+                        </VerticalStackLayout>
+                        
+                    </ScrollView>
+                    
+                </Border>
+                
+                <ScrollView AbsoluteLayout.LayoutBounds="1,1,0.58799769186382,1"
+                            AbsoluteLayout.LayoutFlags="All">
+                    
+                    <VerticalStackLayout Spacing="10" Padding="10">
+
+                        <Label Text="Adicionar novo processo" 
+                               FontSize="64" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>
+
+                        <Grid ColumnDefinitions="*,3*" RowDefinitions=".3*,*,*,*" ColumnSpacing="10" RowSpacing="10">
+
+                            <Border Grid.RowSpan="2" StrokeThickness="0">
+
+                                <components:ProcessesIconComponent iconColor="Red"
+                                                                   iconImage="{x:Static icons:FASolid.Rocket}" 
+                                                                   iconSize="100"/>
+                                
+
+                            </Border>
+                            <Border Grid.Column="1">
+                                <Entry/>
+                            </Border>
+                            <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
+                                <Entry/>
+                            </Border>
+                            <Button Grid.Row="2" Clicked="Button_Clicked"/>
+                            <Button Grid.ColumnSpan="2" Grid.Row="3"/>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                    
+                </ScrollView>
+                
+            </AbsoluteLayout>
+
+        </Border>
+
+        <!--Buttons-->
+
+        <Button MinimumHeightRequest="50" 
+            CornerRadius="50"
+            FontFamily="FAS"
+            FontSize="25"
+            Text="{x:Static icons:FASolid.LeftLong}"
+            AbsoluteLayout.LayoutBounds="0.1026041666666667,0.022,50,50"
+            AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+        <VerticalStackLayout AbsoluteLayout.LayoutBounds="0.0052083333333333,0.5,0.0869791666666667,0.98"
+                         AbsoluteLayout.LayoutFlags="All"
+                         Spacing="10">
+
+            <Button MinimumHeightRequest="80" 
+                CornerRadius="14"
+                FontFamily="FAS"
+                FontSize="40"
+                Text="{x:Static icons:FASolid.Eye}"/>
+
+            <Button MinimumHeightRequest="80" 
+                CornerRadius="14"
+                FontFamily="FAS"
+                FontSize="40"
+                Text="{x:Static icons:FASolid.Users}"/>
+
+            <Button MinimumHeightRequest="80" 
+                CornerRadius="14"
+                FontFamily="FAS"
+                FontSize="40"
+                Text="{x:Static icons:FASolid.NoteSticky}"/>
+
+            <Button MinimumHeightRequest="80" 
+                CornerRadius="14"
+                FontFamily="FAS"
+                FontSize="40"
+                Text="{x:Static icons:FASolid.Shuffle}"/>
+
+        </VerticalStackLayout>
+
+        <Button CornerRadius="14"
+            FontFamily="FAS"
+            VerticalOptions="End"
+            FontSize="30"
+            Text="{x:Static icons:FASolid.Gear}"
+            AbsoluteLayout.LayoutBounds="0.0052083333333333,0.5,0.0869791666666667,0.98"
+            AbsoluteLayout.LayoutFlags="All"/>
+
+    </AbsoluteLayout>
+
+</ContentPage>

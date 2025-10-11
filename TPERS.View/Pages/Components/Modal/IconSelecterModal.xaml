@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:icons="clr-namespace:TPERS.View.Services.Icons"
+               x:Class="TPERS.View.Pages.Components.Modal.IconSelecterModal"
+               xmlns:components="clr-namespace:TPERS.View.Pages.Components"
+               BackgroundColor="#343434"
+               x:Name="Root">
+    
+    <Grid ColumnDefinitions="*,3*" 
+          RowDefinitions="Auto,*,Auto"
+          RowSpacing="20">
+
+        <components:ProcessesIconComponent Grid.RowSpan="3" 
+                                           iconSize="270"
+                                           x:Name="icon"/>
+
+        <Label Text="Customização de icone"
+               VerticalOptions="Center" 
+               Grid.ColumnSpan="2"
+               FontSize="60"
+               FontAttributes="Bold"
+               TextColor="White"
+               HorizontalOptions="Center" />
+
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                BackgroundColor="#424242"
+                StrokeThickness="0"
+                StrokeShape="24">
+
+            <Grid RowDefinitions="*,auto"
+                  RowSpacing="10">
+
+                <CollectionView ItemsSource="{Binding IconList}"
+                                SelectionMode="Single"
+                                MaximumWidthRequest="1200"
+                                SelectionChanged="SelectIcon"
+                                HorizontalOptions="Center">
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="12" VerticalItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+
+                            <Border HeightRequest="55"
+                                    WidthRequest="55"
+                                    StrokeThickness="0"
+                                    BackgroundColor="#282828"
+                                    StrokeShape="14">
+
+                                <Label Text="{Binding .}" 
+                                       FontFamily="FAS"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       FontSize="26"
+                                       TextColor="White"/>
+
+                                <VisualStateManager.VisualStateGroups>
+
+                                    <VisualStateGroup Name="CommonStates">
+
+                                        <VisualState Name="Normal">
+
+                                            <VisualState.Setters>
+                                                <Setter Property="StrokeThickness" Value="0" />
+                                            </VisualState.Setters>
+
+                                        </VisualState>
+
+                                        <VisualState Name="Selected">
+
+                                            <VisualState.Setters>
+                                                <Setter Property="StrokeThickness" Value="5" />
+                                                <Setter Property="Stroke" Value="#4DA3FF" />
+                                            </VisualState.Setters>
+
+                                        </VisualState>
+
+                                    </VisualStateGroup>
+
+                                </VisualStateManager.VisualStateGroups>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <Border Grid.Row="1"
+                        StrokeThickness="5"
+                        Stroke="#4DA3FF"
+                        Padding="10"
+                        StrokeShape="24">
+
+                    <CollectionView ItemsSource="{Binding ColorsList}"
+                                    SelectionMode="Single"
+                                    MaximumWidthRequest="1200"
+                                    SelectionChanged="SelectColor"
+                                    HorizontalOptions="Center">
+
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="12"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <Border HeightRequest="60"
+                                        WidthRequest="60"
+                                        StrokeThickness="4"
+                                        BackgroundColor="{Binding .}"
+                                        StrokeShape="14">
+
+                                    <VisualStateManager.VisualStateGroups>
+
+                                        <VisualStateGroup Name="CommonStates">
+
+                                            <VisualState Name="Normal">
+
+                                                <VisualState.Setters>
+                                                    <Setter Property="StrokeThickness" Value="0" />
+                                                </VisualState.Setters>
+
+                                            </VisualState>
+
+                                            <VisualState Name="Selected">
+
+                                                <VisualState.Setters>
+                                                    <Setter Property="StrokeThickness" Value="5" />
+                                                    <Setter Property="Stroke" Value="#4DA3FF" />
+                                                </VisualState.Setters>
+
+                                            </VisualState>
+
+                                        </VisualStateGroup>
+
+                                    </VisualStateManager.VisualStateGroups>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+        <HorizontalStackLayout HorizontalOptions="End" 
+                               Grid.Row="3"
+                               Grid.Column="1"
+                               Spacing="8">
+
+            <Button Text="Cancelar" 
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    FontSize="20"
+                    BackgroundColor="#FF4C4C"
+                    Clicked="CancelButton"/>
+            
+            <Button Text="Confirmar"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    FontSize="20"
+                    BackgroundColor="#4DA3FF"
+                    Clicked="SaveButton"/>
+            
+        </HorizontalStackLayout>
+
+    </Grid>
+    
+</toolkit:Popup>

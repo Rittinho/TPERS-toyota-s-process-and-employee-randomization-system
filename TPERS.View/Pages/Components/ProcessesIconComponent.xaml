@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:TPERS.View.Services.Icons"
+             x:Class="TPERS.View.Pages.Components.ProcessesIconComponent"
+             x:Name="Root">
+
+    <Border x:Name="externalBorder" 
+            StrokeThickness="0"
+            WidthRequest="{Binding Path=iconSize, Source={x:Reference Root}}"
+            HeightRequest="{Binding Path=iconSize, Source={x:Reference Root}}"
+            Background="{Binding Path=iconColor, Source={x:Reference Root}}"
+            StrokeShape="1000000000000">
+        
+        <Border StrokeThickness="0"
+                Background="#323232"
+                StrokeShape="1000000000000">
+            
+            <Label FontFamily="FAS" 
+                   x:Name="icon" 
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="{Binding Path=iconColor, Source={x:Reference Root}}"
+                   Text="{Binding Path=iconImage, Source={x:Reference Root}}"/>
+            
+        </Border>
+        
+    </Border>
+    
+</ContentView>
