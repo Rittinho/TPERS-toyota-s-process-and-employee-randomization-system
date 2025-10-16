@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TPERS.View.Pages.Components.Elements.IconButtonComponent"
+             x:Name="Root">
+
+    <StackLayout>
+
+        <Border BackgroundColor="{Binding ButtonBackgroundColor}"
+                HeightRequest="{Binding ButtonHeightRequest}"
+                WidthRequest="{Binding ButtonWidthRequest}"
+                StrokeShape="{Binding ButtonCornerRadius}"
+                StrokeThickness="0">
+
+            <StackLayout>
+
+                <Grid x:Name="IconRight" ColumnDefinitions="*,Auto">
+
+                    <Label Text="{Binding TextButton}"
+                           TextColor="{Binding ButtonTextColor}"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontFamily="FAS"
+                           FontSize="{Binding FontSize}"/>
+
+                    <Label Text="{Binding IconButton}"
+                           Grid.Column="1"
+                           TextColor="{Binding ButtonTextColor}"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontSize="{Binding FontSize}"/>
+
+                </Grid>
+
+                <Grid x:Name="IconLeft" ColumnDefinitions="Auto,*">
+
+                    <Label Text="{Binding IconButton}"
+                           TextColor="{Binding ButtonTextColor}"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontSize="{Binding FontSize}"/>
+
+                    <Label Text="{Binding TextButton}"
+                           Grid.Column="1"
+                           TextColor="{Binding ButtonTextColor}"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontFamily="FAS"
+                           FontSize="{Binding FontSize}"/>
+
+                </Grid>
+
+            </StackLayout>
+            
+        </Border>
+
+    </StackLayout>
+
+</ContentView>

@@ -5,6 +5,8 @@
                xmlns:icons="clr-namespace:TPERS.View.Services.Icons"
                x:Class="TPERS.View.Pages.Components.Modal.IconSelecterModal"
                xmlns:components="clr-namespace:TPERS.View.Pages.Components"
+               xmlns:Local="clr-namespace:TPERS.View.Pages"
+               x:TypeArguments="Local:IconPropertys"
                BackgroundColor="#343434"
                x:Name="Root">
     
@@ -12,10 +14,7 @@
           RowDefinitions="Auto,*,Auto"
           RowSpacing="20">
 
-        <components:ProcessesIconComponent Grid.RowSpan="3" 
-                                           iconSize="270"
-                                           x:Name="icon"/>
-
+        <!--Titulos-->
         <Label Text="Customização de icone"
                VerticalOptions="Center" 
                Grid.ColumnSpan="2"
@@ -23,7 +22,13 @@
                FontAttributes="Bold"
                TextColor="White"
                HorizontalOptions="Center" />
+        
+        <!--Icon preview-->
+        <components:ProcessesIconComponent Grid.RowSpan="3" 
+                                           iconSize="270"
+                                           x:Name="icon"/>
 
+        <!--Listas de icones e cores-->
         <Border Grid.Row="1"
                 Grid.Column="1"
                 BackgroundColor="#424242"
@@ -32,7 +37,8 @@
 
             <Grid RowDefinitions="*,auto"
                   RowSpacing="10">
-
+                
+                <!--Lista de icones-->
                 <CollectionView ItemsSource="{Binding IconList}"
                                 SelectionMode="Single"
                                 MaximumWidthRequest="1200"
@@ -93,12 +99,14 @@
 
                 </CollectionView>
 
+                <!--Container de cores-->
                 <Border Grid.Row="1"
                         StrokeThickness="5"
                         Stroke="#4DA3FF"
                         Padding="10"
                         StrokeShape="24">
 
+                    <!--Lista de cores-->
                     <CollectionView ItemsSource="{Binding ColorsList}"
                                     SelectionMode="Single"
                                     MaximumWidthRequest="1200"
@@ -157,6 +165,7 @@
 
         </Border>
 
+        <!--Botões-->
         <HorizontalStackLayout HorizontalOptions="End" 
                                Grid.Row="3"
                                Grid.Column="1"

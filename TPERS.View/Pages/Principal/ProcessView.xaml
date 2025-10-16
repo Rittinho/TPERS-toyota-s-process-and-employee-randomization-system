@@ -6,7 +6,8 @@
              xmlns:toolkkits="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:components="clr-namespace:TPERS.View.Pages.Components"
              NavigationPage.HasNavigationBar="False"
-             Title="ProcessView">
+             Title="ProcessView"
+             x:Name="Root">
 
     <AbsoluteLayout>
 
@@ -17,60 +18,262 @@
                 AbsoluteLayout.LayoutFlags="All">
 
             <AbsoluteLayout>
-                
+
+                <!--LeftContainer-->
                 <Border AbsoluteLayout.LayoutBounds="0,1,0.41200230813618,1"
                         AbsoluteLayout.LayoutFlags="All"
                         StrokeShape="14"
                         StrokeThickness="0"
+                        Padding="10"
                         BackgroundColor="#4DA3FF">
 
-                    <ScrollView>
+                    <Grid RowDefinitions="Auto,*">
                         
-                        <VerticalStackLayout Spacing="10" Padding="10" VerticalOptions="Center">
+                        <!--Titulo-->
+                        <Label Text="Processos existentes" 
+                               FontSize="45" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>     
 
-                            <Label Text="Processos existentes" 
-                                   FontSize="64" 
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center"/>
+                        <!--Lista de processos cadastrados-->
+                        <ScrollView Grid.Row="1">
 
-                            <CollectionView>
+                            <VerticalStackLayout Spacing="10">
 
-                            </CollectionView>
+                                <CollectionView ItemsSource="{Binding processList}"
+                                                SelectionMode="None"
+                                                HorizontalOptions="Center">
 
-                        </VerticalStackLayout>
+                                    <CollectionView.ItemsLayout>
+                                        <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="5"/>
+                                    </CollectionView.ItemsLayout>
+
+                                    <CollectionView.ItemTemplate>
+
+                                        <DataTemplate>
+
+                                            <Border StrokeShape="14"
+                                                    Padding="10"
+                                                    StrokeThickness="0"
+                                                    BackgroundColor="#323232">
+
+                                                <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="10">
+
+                                                    <components:ProcessesIconComponent iconSize="50"
+                                                                                       iconColor="{Binding icon.color}"
+                                                                                       iconImage="{Binding icon.image}"/>
+
+                                                    <Label Text="{Binding title}"
+                                                           Grid.Column="1"
+                                                           FontSize="25"
+                                                           FontAttributes="Bold"
+                                                           HorizontalOptions="Center"
+                                                           VerticalOptions="Center"/>
+
+                                                    <Button Grid.Column="2"
+                                                            Padding="10"
+                                                            FontSize="20"
+                                                            TextColor="White"
+                                                            FontFamily="FAS"
+                                                            CornerRadius="9999"
+                                                            BackgroundColor="Transparent"
+                                                            Command="{Binding Source={x:Reference Root}, Path=ProcessPopupCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Text="{x:Static icons:FASolid.Eye}"/>
+
+                                                    <Button Grid.Column="3"
+                                                            Padding="10"
+                                                            FontSize="20"
+                                                            TextColor="White"
+                                                            FontFamily="FAS"
+                                                            CornerRadius="9999"
+                                                            BackgroundColor="Transparent"
+                                                            Command="{Binding Source={x:Reference Root}, Path=ProcessPopupCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Text="{x:Static icons:FASolid.Pen}"/>
+                                                    
+                                                </Grid>
+
+                                            </Border>
+
+                                        </DataTemplate>
+
+                                    </CollectionView.ItemTemplate>
+
+                                </CollectionView>
+
+                            </VerticalStackLayout>
+
+                        </ScrollView>
                         
-                    </ScrollView>
+                    </Grid>
                     
                 </Border>
-                
+
+                <!--RightContainer-->
                 <ScrollView AbsoluteLayout.LayoutBounds="1,1,0.58799769186382,1"
                             AbsoluteLayout.LayoutFlags="All">
                     
                     <VerticalStackLayout Spacing="10" Padding="10">
 
+                        <!--Titulo-->
                         <Label Text="Adicionar novo processo" 
-                               FontSize="64" 
+                               FontSize="45" 
                                FontAttributes="Bold"
                                HorizontalOptions="Center"/>
 
-                        <Grid ColumnDefinitions="*,3*" RowDefinitions=".3*,*,*,*" ColumnSpacing="10" RowSpacing="10">
+                        <!--Formulario de processo-->
+                        <Grid ColumnDefinitions="*,2*"
+                              RowDefinitions="*,*" 
+                              ColumnSpacing="10"
+                              RowSpacing="10">
 
-                            <Border Grid.RowSpan="2" StrokeThickness="0">
+                            <!--Icone-->
+                            <Border StrokeThickness="0"
+                                    Padding="10"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
 
-                                <components:ProcessesIconComponent iconColor="Red"
-                                                                   iconImage="{x:Static icons:FASolid.Rocket}" 
-                                                                   iconSize="100"/>
+                                <AbsoluteLayout HeightRequest="160"
+                                                WidthRequest="160">
+
+                                    <components:ProcessesIconComponent AbsoluteLayout.LayoutBounds="1,1,1,1"
+                                                                       AbsoluteLayout.LayoutFlags="All"
+                                                                       x:Name="Icon"
+                                                                       iconSize="160"/>
+
+                                    <Border AbsoluteLayout.LayoutBounds="1,0,0.3,0.3"
+                                            AbsoluteLayout.LayoutFlags="All"
+                                            BackgroundColor="Gray"
+                                            StrokeThickness="0"
+                                            StrokeShape="100">
+
+                                        <Label Text="{Static icons:FASolid.Pen}"
+                                               FontFamily="FAS"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               Padding="5"
+                                               FontSize="20"
+                                               TextColor="White"/>
+
+                                    </Border>
+
+                                </AbsoluteLayout>
+
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding IconCustomizerPopup}"/>
+                                </Border.GestureRecognizers>
+
+                            </Border>
+
+                            <!--Titulo e discrição(Opcional)-->
+                            <VerticalStackLayout Grid.Column="1" Spacing="10">
+
+                                <Border Padding="10,5,10,5"
+                                        StrokeShape="14"
+                                        StrokeThickness="0"
+                                        BackgroundColor="#73ACE0">
+
+                                    <Entry FontSize="15"
+                                           Placeholder="Nome"
+                                           x:Name="titleLabel"
+                                           BackgroundColor="Transparent"
+                                           FontAttributes="Bold"/>
+
+                                </Border>
+
+                                <Border Padding="10,5,10,5"
+                                        StrokeShape="14"
+                                        StrokeThickness="0"
+                                        BackgroundColor="#73ACE0">
+
+                                    <Editor FontSize="15"
+                                            Placeholder="Descrição"
+                                            MinimumHeightRequest="120"
+                                            AutoSize="TextChanges"
+                                            x:Name="descriptionLabel"
+                                            BackgroundColor="Transparent"
+                                            FontAttributes="Bold"/>
+
+                                </Border>
                                 
+                            </VerticalStackLayout>
+                            
+                            <!--Salvar-->
+                            <Button Grid.ColumnSpan="2" Grid.Row="2" 
+                                    Text="Salvar"
+                                    IsVisible="False"
+                                    FontAttributes="Bold"
+                                    FontSize="20"
+                                    BackgroundColor="#4DA3FF"
+                                    Command="{Binding SaveProcessCommand}"/>
 
-                            </Border>
-                            <Border Grid.Column="1">
-                                <Entry/>
-                            </Border>
-                            <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
-                                <Entry/>
-                            </Border>
-                            <Button Grid.Row="2" Clicked="Button_Clicked"/>
-                            <Button Grid.ColumnSpan="2" Grid.Row="3"/>
+                            <Grid Grid.Row="2"
+                                  Grid.ColumnSpan="2"
+                                  ColumnDefinitions="*,*"
+                                  ColumnSpacing="10">
+
+                                <Border Padding="10"
+                                        StrokeShape="14"
+                                        StrokeThickness="0"
+                                        BackgroundColor="#4DA3FF">
+
+                                    <HorizontalStackLayout Spacing="10">
+
+                                        <Label Text="{x:Static icons:FASolid.RotateLeft}"
+                                               TextColor="White"
+                                               VerticalOptions="Center" 
+                                               HorizontalOptions="Center"
+                                               FontFamily="FAS"
+                                               FontSize="20"/>  
+
+                                        <Label Text="Voltar"
+                                               TextColor="White"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center" 
+                                               HorizontalOptions="Center"
+                                               FontSize="20"/>
+
+                                    </HorizontalStackLayout>
+
+                                    <Border.GestureRecognizers>
+                                        <!--<TapGestureRecognizer Command=""/>-->
+                                    </Border.GestureRecognizers>
+
+                                </Border>
+                                
+                                <Border Padding="10"
+                                        Grid.Column="1"
+                                        StrokeShape="14"
+                                        StrokeThickness="0"
+                                        BackgroundColor="#4DA3FF">
+
+                                    <HorizontalStackLayout Spacing="10">
+
+                                        <Label Text="{x:Static icons:FASolid.RotateLeft}"
+                                               TextColor="White"
+                                               VerticalOptions="Center" 
+                                               HorizontalOptions="Center"
+                                               FontFamily="FAS"
+                                               FontSize="20"/>  
+
+                                        <Label Text="Voltar"
+                                               TextColor="White"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center" 
+                                               HorizontalOptions="Center"
+                                               FontSize="20"/>
+
+                                    </HorizontalStackLayout>
+
+                                    <Border.GestureRecognizers>
+                                        <!--<TapGestureRecognizer Command=""/>-->
+                                    </Border.GestureRecognizers>
+
+                                </Border>
+
+                            </Grid>
+
                         </Grid>
 
                     </VerticalStackLayout>
@@ -82,14 +285,6 @@
         </Border>
 
         <!--Buttons-->
-
-        <Button MinimumHeightRequest="50" 
-            CornerRadius="50"
-            FontFamily="FAS"
-            FontSize="25"
-            Text="{x:Static icons:FASolid.LeftLong}"
-            AbsoluteLayout.LayoutBounds="0.1026041666666667,0.022,50,50"
-            AbsoluteLayout.LayoutFlags="PositionProportional"/>
 
         <VerticalStackLayout AbsoluteLayout.LayoutBounds="0.0052083333333333,0.5,0.0869791666666667,0.98"
                          AbsoluteLayout.LayoutFlags="All"

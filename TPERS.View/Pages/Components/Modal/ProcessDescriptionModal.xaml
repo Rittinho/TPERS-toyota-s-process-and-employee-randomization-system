@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:Local="clr-namespace:TPERS.View.Pages"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:icons="clr-namespace:TPERS.View.Services.Icons"
+               xmlns:components="clr-namespace:TPERS.View.Pages.Components"
+               x:TypeArguments="Local:ToyotaProcess"
+               BackgroundColor="#343434"
+               x:Class="TPERS.View.Pages.Components.Modal.ProcessDescriptionModal">
+    
+    <Grid RowDefinitions="Auto,*,Auto"
+          RowSpacing="20">
+
+        <!--Botão para editar-->
+        <HorizontalStackLayout HorizontalOptions="End">
+
+            <Border Padding="10"
+                    StrokeShape="14"
+                    StrokeThickness="0"
+                    BackgroundColor="#4DA3FF">
+
+                <HorizontalStackLayout Spacing="10">
+
+                    <Label Text="{x:Static icons:FASolid.Pen}"
+                           TextColor="White"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontFamily="FAS"
+                           FontSize="20"/>
+
+                    <Label Text="Editar"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontSize="20"/>
+
+                </HorizontalStackLayout>
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding EditCommand}"/>
+                    
+                </Border.GestureRecognizers>
+
+            </Border>
+
+        </HorizontalStackLayout>
+
+        <!--Conteudo-->
+        <Grid Grid.Row="1" ColumnDefinitions="*,2*">
+
+            <components:ProcessesIconComponent iconSize="350"
+                                       Grid.RowSpan="2"
+                                       iconImage="{Binding icon.image}"
+                                       iconColor="{Binding icon.color}"/>
+
+            <ScrollView Grid.Column="1">
+
+                <VerticalStackLayout>
+
+                    <Label Grid.Column="1"
+                           Text="{Binding title}"
+                           FontSize="60"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"/>
+
+                    <Label Grid.Column="1" 
+                           Grid.Row="1"
+                           Text="{Binding description}"
+                           FontSize="40"
+                           TextColor="White"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"/>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+        </Grid>
+
+        <!--Botão de editar-->
+        <HorizontalStackLayout Grid.Row="2"
+                               HorizontalOptions="End" 
+                               Spacing="10">
+
+            <Border Padding="10"
+                    StrokeShape="14"
+                    StrokeThickness="0"
+                    BackgroundColor="#4DA3FF">
+
+                <HorizontalStackLayout Spacing="10">
+
+                    <Label Text="{x:Static icons:FASolid.RotateLeft}"
+                           TextColor="White"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontFamily="FAS"
+                           FontSize="20"/>
+
+                    <Label Text="Voltar"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontSize="20"/>
+
+                </HorizontalStackLayout>
+
+                <Border.GestureRecognizers>
+                    <!--<TapGestureRecognizer Command=""/>-->
+                </Border.GestureRecognizers>
+
+            </Border>
+
+        </HorizontalStackLayout>
+
+    </Grid>
+    
+</toolkit:Popup>

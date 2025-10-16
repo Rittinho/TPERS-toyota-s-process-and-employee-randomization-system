@@ -73,16 +73,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\Components\Modal\IconSelecter.xaml.cs">
-	    <DependentUpon>IconSelecter.xaml</DependentUpon>
+	  <Compile Update="Pages\Components\Elements\IconButtonComponent.xaml.cs">
+	    <DependentUpon>IconButtonComponent.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Components\Modal\IconSelecter.xaml">
+	  <MauiXaml Update="Pages\Components\Elements\IconButtonComponent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Components\Modal\IconSelecterModal.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Components\Modal\ProcessDescriptionModal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Components\ProcessesIconComponent.xaml">

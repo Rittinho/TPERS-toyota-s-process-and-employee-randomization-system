@@ -7,22 +7,22 @@
 
     <Border x:Name="externalBorder" 
             StrokeThickness="0"
-            WidthRequest="{Binding Path=iconSize, Source={x:Reference Root}}"
             HeightRequest="{Binding Path=iconSize, Source={x:Reference Root}}"
+            WidthRequest="{Binding Path=iconSize, Source={x:Reference Root}}"
             Background="{Binding Path=iconColor, Source={x:Reference Root}}"
             StrokeShape="1000000000000">
         
         <Border StrokeThickness="0"
                 Background="#323232"
                 StrokeShape="1000000000000">
-            
+
             <Label FontFamily="FAS" 
                    x:Name="icon" 
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   TextColor="{Binding Path=iconColor, Source={x:Reference Root}}"
-                   Text="{Binding Path=iconImage, Source={x:Reference Root}}"/>
-            
+                   Text="{Binding Path=iconImage, Source={x:Reference Root}}"
+                   TextColor="{Binding Path=iconColor, Source={x:Reference Root}}"/>
+
         </Border>
         
     </Border>

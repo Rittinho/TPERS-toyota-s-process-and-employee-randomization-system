@@ -1,9 +1,11 @@
+using TPERS.View.Services.Icons;
+
 namespace TPERS.View.Pages.Components;
 
 public partial class ProcessesIconComponent : ContentView
 {
     public static readonly BindableProperty iconSizeProperty =
-    BindableProperty.Create(nameof(iconSize), typeof(int), typeof(ProcessesIconComponent), default(int), propertyChanging: OnIconSizePropertyChanged);
+    BindableProperty.Create(nameof(iconSize), typeof(int), typeof(ProcessesIconComponent), default(int), propertyChanged: OnIconSizePropertyChanged);
 
     public static readonly BindableProperty iconColorProperty =
     BindableProperty.Create(nameof(iconColor), typeof(Color), typeof(ProcessesIconComponent), default(Color));
@@ -29,7 +31,6 @@ public partial class ProcessesIconComponent : ContentView
     public ProcessesIconComponent()
 	{
 		InitializeComponent();
-        BindingContext = this;
         externalBorder.Padding = iconSize * 0.10;
         icon.FontSize = iconSize * 0.50;
     }
