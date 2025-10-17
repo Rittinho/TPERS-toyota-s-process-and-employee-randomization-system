@@ -65,6 +65,7 @@
                                                                                        iconImage="{Binding icon.image}"/>
 
                                                     <Label Text="{Binding title}"
+                                                           LineBreakMode="TailTruncation"
                                                            Grid.Column="1"
                                                            FontSize="25"
                                                            FontAttributes="Bold"

@@ -14,9 +14,7 @@ public partial class ProcessDescriptionModal : Popup<ToyotaProcess>
     public string description { get; set; }
     public IconPropertys icon { get; set; }
 
-    public ICommand EditCommand => new Command(EditProcess);
-    public ICommand CancelEditCommand => new Command(CloseEditProcess);
-    public ICommand SaveEditCommand => new Command(CloseEditProcess);
+    public ICommand CloseCommand => new Command(CloseShow);
 
     public ProcessDescriptionModal(ToyotaProcess toyotaProcess)
 	{
@@ -28,12 +26,8 @@ public partial class ProcessDescriptionModal : Popup<ToyotaProcess>
 
         BindingContext = this;
     }
-    public void EditProcess()
+    public async void CloseShow()
     {
-        isEdit = true;
-    }
-    public void CloseEditProcess()
-    {
-        isEdit = false;
+        await CloseAsync();
     }
 }

@@ -1,4 +1,4 @@
-using CommunityToolkit.Maui.Views;
+  using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls.Shapes;
 using Syncfusion.Maui.Core;
 using System.Collections.ObjectModel;
@@ -68,6 +68,7 @@ public partial class IconSelecterModal : Popup<IconPropertys>
     {
 
     }
+
     private async void SaveButton(object sender, EventArgs e)
     {
         IconPropertys iconData = new IconPropertys(selectedIconCode, selectedColor);

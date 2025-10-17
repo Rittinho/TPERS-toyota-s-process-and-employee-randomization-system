@@ -54,8 +54,13 @@ public partial class ProcessView : ContentPage
             return;
     }
 
-    private void DeleteProcess(ToyotaProcess toyotaProcess)
+    private async void DeleteProcess(ToyotaProcess toyotaProcess)
     {
+        IPopupResult<bool> result = await this.ShowPopupAsync<bool>(new ConfirmActionModal(new TokenAction("wefwethwet", "ewrthhhhhwethwethewthwrg",false)), PopupOptions.Empty, CancellationToken.None);
+
+        if (result.WasDismissedByTappingOutsideOfPopup || !result.Result!)
+            return;
+
         processList.Remove(toyotaProcess);
     }
 

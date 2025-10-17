@@ -8,47 +8,12 @@
                x:TypeArguments="Local:ToyotaProcess"
                BackgroundColor="#343434"
                x:Class="TPERS.View.Pages.Components.Modal.ProcessDescriptionModal">
-    
-    <Grid RowDefinitions="Auto,*,Auto"
+
+    <Grid RowDefinitions="*,Auto"
           RowSpacing="20">
-
-        <!--Botão para editar-->
-        <HorizontalStackLayout HorizontalOptions="End">
-
-            <Border Padding="10"
-                    StrokeShape="14"
-                    StrokeThickness="0"
-                    BackgroundColor="#FF4C4C">
-
-                <HorizontalStackLayout Spacing="10">
-
-                    <Label Text="{x:Static icons:FASolid.x}"
-                           TextColor="White"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontFamily="FAS"
-                           FontSize="20"/>
-
-                    <Label Text="Excluir"
-                           TextColor="White"
-                           FontAttributes="Bold"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontSize="20"/>
-
-                </HorizontalStackLayout>
-
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding EditCommand}"/>
-                    
-                </Border.GestureRecognizers>
-
-            </Border>
-
-        </HorizontalStackLayout>
-
+        
         <!--Conteudo-->
-        <Grid Grid.Row="1" ColumnDefinitions="*,2*">
+        <Grid ColumnDefinitions="*,2*">
 
             <components:ProcessesIconComponent iconSize="350"
                                        Grid.RowSpan="2"
@@ -82,40 +47,36 @@
         </Grid>
 
         <!--Botão de editar-->
-        <HorizontalStackLayout Grid.Row="2"
-                               HorizontalOptions="End" 
-                               Spacing="10">
+        <Border Grid.Row="1"
+                HorizontalOptions="End"  
+                Padding="10"
+                StrokeShape="14"
+                StrokeThickness="0"
+                BackgroundColor="#4DA3FF">
 
-            <Border Padding="10"
-                    StrokeShape="14"
-                    StrokeThickness="0"
-                    BackgroundColor="#4DA3FF">
+            <HorizontalStackLayout Spacing="10">
 
-                <HorizontalStackLayout Spacing="10">
+                <Label Text="{x:Static icons:FASolid.RotateLeft}"
+                       TextColor="White"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"
+                       FontFamily="FAS"
+                       FontSize="20"/>
 
-                    <Label Text="{x:Static icons:FASolid.RotateLeft}"
-                           TextColor="White"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontFamily="FAS"
-                           FontSize="20"/>
+                <Label Text="Voltar"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"
+                       FontSize="20"/>
 
-                    <Label Text="Voltar"
-                           TextColor="White"
-                           FontAttributes="Bold"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontSize="20"/>
+            </HorizontalStackLayout>
 
-                </HorizontalStackLayout>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding CloseCommand}"/>
+            </Border.GestureRecognizers>
 
-                <Border.GestureRecognizers>
-                    <!--<TapGestureRecognizer Command=""/>-->
-                </Border.GestureRecognizers>
-
-            </Border>
-
-        </HorizontalStackLayout>
+        </Border>
 
     </Grid>
     
