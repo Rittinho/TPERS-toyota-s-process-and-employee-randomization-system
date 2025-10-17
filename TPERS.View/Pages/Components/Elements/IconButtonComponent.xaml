@@ -6,54 +6,32 @@
 
     <StackLayout>
 
-        <Border BackgroundColor="{Binding ButtonBackgroundColor}"
+        <Border x:Name="ButtonBorder"
+                BackgroundColor="{Binding ButtonBackgroundColor}"
                 HeightRequest="{Binding ButtonHeightRequest}"
                 WidthRequest="{Binding ButtonWidthRequest}"
-                StrokeShape="{Binding ButtonCornerRadius}"
                 StrokeThickness="0">
-
-            <StackLayout>
-
-                <Grid x:Name="IconRight" ColumnDefinitions="*,Auto">
-
-                    <Label Text="{Binding TextButton}"
-                           TextColor="{Binding ButtonTextColor}"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontFamily="FAS"
-                           FontSize="{Binding FontSize}"/>
-
-                    <Label Text="{Binding IconButton}"
-                           Grid.Column="1"
-                           TextColor="{Binding ButtonTextColor}"
-                           FontAttributes="Bold"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontSize="{Binding FontSize}"/>
-
-                </Grid>
-
-                <Grid x:Name="IconLeft" ColumnDefinitions="Auto,*">
-
-                    <Label Text="{Binding IconButton}"
-                           TextColor="{Binding ButtonTextColor}"
-                           FontAttributes="Bold"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontSize="{Binding FontSize}"/>
-
-                    <Label Text="{Binding TextButton}"
-                           Grid.Column="1"
-                           TextColor="{Binding ButtonTextColor}"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
-                           FontFamily="FAS"
-                           FontSize="{Binding FontSize}"/>
-
-                </Grid>
-
-            </StackLayout>
             
+            <Grid x:Name="ButtonGrid" 
+                  RowDefinitions="Auto,*">
+               
+                <Label x:Name="IconLabel"
+                       Text="{Binding IconButton}"
+                       FontFamily="FAS"
+                       TextColor="{Binding ButtonTextColor}"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"/>
+
+                <Label x:Name="TextLabel"
+                       Text="{Binding TextButton}"
+                       Grid.Column="1"
+                       TextColor="{Binding ButtonTextColor}"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"/>
+                
+            </Grid>
+
         </Border>
 
     </StackLayout>

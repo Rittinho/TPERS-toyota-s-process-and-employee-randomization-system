@@ -10,11 +10,14 @@ namespace TPERS.View.Pages.Principal;
 
 public partial class ProcessView : ContentPage
 {
+    public bool isEdit { get; set; } = false;
+
     public ObservableCollection<ToyotaProcess> processList { get; } = new ObservableCollection<ToyotaProcess>();
 
     public ICommand IconCustomizerPopup => new Command(IconPopup);
     public ICommand ProcessPopupCommand=> new Command<ToyotaProcess>(ProcessPopup);
     public ICommand SaveProcessCommand => new Command(SaveProcess);
+    public ICommand DeleteProcessCommand => new Command<ToyotaProcess>(DeleteProcess);
 
     public ProcessView()
     {
@@ -22,7 +25,7 @@ public partial class ProcessView : ContentPage
 
         Icon.iconColor = Colors.White;
         Icon.iconImage = FASolid.Asterisk;
-
+        EditProcess();
         BindingContext = this;
     }
 
@@ -49,5 +52,24 @@ public partial class ProcessView : ContentPage
 
         if (result.WasDismissedByTappingOutsideOfPopup)
             return;
+    }
+
+    private void DeleteProcess(ToyotaProcess toyotaProcess)
+    {
+        processList.Remove(toyotaProcess);
+    }
+
+    public void EditProcess()
+    {
+        CreateButton.IsVisible = !isEdit;
+        EditButtons.IsVisible = isEdit;
+
+        if (isEdit)
+        {
+            TitleLabel.Text = "Editar Processo";
+            return;
+        }
+
+        TitleLabel.Text = "Criar Processo";
     }
 }

@@ -18,18 +18,18 @@
             <Border Padding="10"
                     StrokeShape="14"
                     StrokeThickness="0"
-                    BackgroundColor="#4DA3FF">
+                    BackgroundColor="#FF4C4C">
 
                 <HorizontalStackLayout Spacing="10">
 
-                    <Label Text="{x:Static icons:FASolid.Pen}"
+                    <Label Text="{x:Static icons:FASolid.x}"
                            TextColor="White"
                            VerticalOptions="Center" 
                            HorizontalOptions="Center"
                            FontFamily="FAS"
                            FontSize="20"/>
 
-                    <Label Text="Editar"
+                    <Label Text="Excluir"
                            TextColor="White"
                            FontAttributes="Bold"
                            VerticalOptions="Center" 

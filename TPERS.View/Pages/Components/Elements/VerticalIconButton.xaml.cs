@@ -1,26 +1,12 @@
+using Microsoft.Maui;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace TPERS.View.Pages.Components.Elements;
 
-public enum IconPosition
-{
-    Up,
-    Down,
-    Left,
-    Right
-}
-
-public enum TextAlignment
-{
-    Center,
-    Left,
-    Right
-}
-
-public partial class IconButtonComponent : ContentView
+public partial class VerticalIconButton : ContentView
 {
     public static readonly BindableProperty ButtonBackgroundColorProperty =
-    BindableProperty.Create(nameof(ButtonBackgroundColor), typeof(Color), typeof(IconButtonComponent), default(Color));
+   BindableProperty.Create(nameof(ButtonBackgroundColor), typeof(Color), typeof(IconButtonComponent), default(Color));
 
     public static readonly BindableProperty ButtonTextColorProperty =
     BindableProperty.Create(nameof(ButtonTextColor), typeof(Color), typeof(IconButtonComponent), default(Color));
@@ -31,24 +17,24 @@ public partial class IconButtonComponent : ContentView
     public static readonly BindableProperty IconButtonProperty =
     BindableProperty.Create(nameof(IconButton), typeof(string), typeof(IconButtonComponent), default(string));
 
-    public static readonly BindableProperty ButtonHorizontalIconPositionProperty =
-    BindableProperty.Create(
-        nameof(ButtonHorizontalIconPosition),
-        typeof(IconPosition),
-        typeof(IconButtonComponent),
-        defaultValue: IconPosition.Left,
-        propertyChanged: OnIconPositionChanged);
+    public static readonly BindableProperty ButtonIconPositionProperty =
+       BindableProperty.Create(
+       nameof(ButtonVerticalIconPosition),
+       typeof(VerticalAlignment),
+       typeof(IconButtonComponent),
+       defaultValue: VerticalAlignment.Up,
+       propertyChanged: OnIconPositionChanged);
 
-    public static readonly BindableProperty ButtonHorizontalTextAlignmentProperty =
-    BindableProperty.Create(
+    public static readonly BindableProperty ButtonTextAlignmentProperty =
+        BindableProperty.Create(
         nameof(ButtonHorizontalTextAlignment),
-        typeof(TextAlignment),
+        typeof(HorizontalAlignment),
         typeof(IconButtonComponent),
-        defaultValue: TextAlignment.Center,
+        defaultValue: HorizontalAlignment.Center,
         propertyChanged: OnTextAlignmentChanged);
 
     public static readonly BindableProperty ButtonHeightRequestProperty =
-    BindableProperty.Create(nameof(ButtonHeightRequest), typeof(int), typeof(IconButtonComponent), default(int));
+   BindableProperty.Create(nameof(ButtonHeightRequest), typeof(int), typeof(IconButtonComponent), default(int));
 
     public static readonly BindableProperty ButtonWidthRequestProperty =
     BindableProperty.Create(nameof(ButtonWidthRequest), typeof(int), typeof(IconButtonComponent), default(int));
@@ -68,16 +54,16 @@ public partial class IconButtonComponent : ContentView
         set => SetValue(ButtonTextColorProperty, value);
     }
 
-    public IconPosition ButtonHorizontalIconPosition
+    public VerticalAlignment ButtonVerticalIconPosition
     {
-        get => (IconPosition)GetValue(ButtonHorizontalIconPositionProperty);
-        set => SetValue(ButtonHorizontalIconPositionProperty, value);
+        get => (VerticalAlignment)GetValue(ButtonIconPositionProperty);
+        set => SetValue(ButtonIconPositionProperty, value);
     }
 
-    public TextAlignment ButtonHorizontalTextAlignment
+    public HorizontalAlignment ButtonHorizontalTextAlignment
     {
-        get => (TextAlignment)GetValue(ButtonHorizontalTextAlignmentProperty);
-        set => SetValue(ButtonHorizontalTextAlignmentProperty, value);
+        get => (HorizontalAlignment)GetValue(ButtonTextAlignmentProperty);
+        set => SetValue(ButtonTextAlignmentProperty, value);
     }
 
     public string TextButton
@@ -110,11 +96,9 @@ public partial class IconButtonComponent : ContentView
         set => SetValue(ButtonCornerRadiusProperty, value);
     }
 
-    public LayoutOptions layoutOptions;
-
-    public IconButtonComponent()
-    {
-        InitializeComponent();
+    public VerticalIconButton()
+	{
+		InitializeComponent();
         BindingContext = this;
         SetTextPosition();
         SetIconPosition();
@@ -130,57 +114,6 @@ public partial class IconButtonComponent : ContentView
     {
         var control = (IconButtonComponent)bindable;
         control.SetTextPosition();
-    }
-
-    public void SetIconPosition()
-    {
-        switch (ButtonHorizontalIconPosition)
-        {
-
-            case IconPosition.Left:
-                IconLeftButton();
-                break;
-
-            case IconPosition.Right:
-                IconRightButton();
-                break;
-
-            case IconPosition.Up:
-                IconUpButton();
-                break;
-
-            case IconPosition.Down:
-                IconDownButton();
-                break;
-
-        }
-
-        VisualButtonOptions(ButtonCornerRadius);
-        SetTextPosition();
-    }
-
-    public void IconLeftButton()
-    {
-        ButtonGrid.ColumnDefinitions.Clear();
-        ButtonGrid.RowDefinitions.Clear();
-
-        ButtonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto});
-        ButtonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-
-        Grid.SetColumn(IconLabel,0);
-        Grid.SetColumn(TextLabel,1);
-    }
-
-    public void IconRightButton()
-    {
-        ButtonGrid.ColumnDefinitions.Clear();
-        ButtonGrid.RowDefinitions.Clear();
-
-        ButtonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star});
-        ButtonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-        Grid.SetColumn(TextLabel, 0);
-        Grid.SetColumn(IconLabel, 1);
     }
 
     public void IconUpButton()
@@ -207,32 +140,50 @@ public partial class IconButtonComponent : ContentView
         Grid.SetRow(IconLabel, 1);
     }
 
+    public void SetIconPosition()
+    {
+        switch (ButtonVerticalIconPosition)
+        {
+
+            case VerticalAlignment.Up:
+                IconUpButton();
+                break;
+
+            case VerticalAlignment.Down:
+                IconDownButton();
+                break;
+
+        }
+
+        VisualButtonOptions(ButtonCornerRadius);
+        SetTextPosition();
+    }
+
     public void VisualButtonOptions(int value)
     {
         ButtonBorder.StrokeShape = new RoundRectangle { CornerRadius = value };
         ButtonBorder.Padding = 10;
 
-        IconLabel.FontSize = ButtonBorder.HeightRequest * 0.6;
-        TextLabel.FontSize = ButtonBorder.HeightRequest * 0.3;
+        IconLabel.FontSize = ButtonHeightRequest * 0.6;
+        TextLabel.FontSize = ButtonHeightRequest * 0.3;
     }
 
     public void SetTextPosition()
     {
         switch (ButtonHorizontalTextAlignment)
         {
-            case TextAlignment.Center:
-                layoutOptions = LayoutOptions.Center;
+            case HorizontalAlignment.Center:
+                TextLabel.HorizontalOptions = LayoutOptions.Center;
                 break;
 
-            case TextAlignment.Left:
-                layoutOptions = LayoutOptions.Start;
+            case HorizontalAlignment.Left:
+                TextLabel.HorizontalOptions = LayoutOptions.Start;
                 break;
 
-            case TextAlignment.Right:
-                layoutOptions = LayoutOptions.End;
+            case HorizontalAlignment.Right:
+                TextLabel.HorizontalOptions = LayoutOptions.End;
                 break;
 
         }
     }
-
 }
