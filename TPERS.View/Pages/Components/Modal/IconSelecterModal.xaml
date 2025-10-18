@@ -166,25 +166,73 @@
         </Border>
 
         <!--Botões-->
+
         <HorizontalStackLayout HorizontalOptions="End" 
                                Grid.Row="3"
                                Grid.Column="1"
-                               Spacing="8">
+                               Spacing="8">  
 
-            <Button Text="Cancelar" 
-                    FontAttributes="Bold"
-                    TextColor="White"
-                    FontSize="20"
-                    BackgroundColor="#FF4C4C"
-                    Clicked="CancelButton"/>
-            
-            <Button Text="Confirmar"
-                    FontAttributes="Bold"
-                    TextColor="White"
-                    FontSize="20"
-                    BackgroundColor="#4DA3FF"
-                    Clicked="SaveButton"/>
-            
+            <!--Retornar-->
+            <Border Padding="10"
+                    StrokeShape="14"
+                    StrokeThickness="0"
+                    BackgroundColor="#FF4C4C">
+
+                <HorizontalStackLayout Spacing="10">
+
+                    <Label Text="{x:Static icons:FASolid.CircleXmark}"
+                           TextColor="White"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontFamily="FAS"
+                           FontSize="15"/>
+
+                    <Label Text="Cancelar"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontSize="15"/>
+
+                </HorizontalStackLayout>
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=CancelChangeCommand}"/>
+                </Border.GestureRecognizers>
+
+            </Border>
+
+            <!--Confirmar-->
+            <Border Grid.Column="1" 
+                    Padding="10"
+                    StrokeShape="14"
+                    StrokeThickness="0"
+                    BackgroundColor="#4CAF50">
+
+                <HorizontalStackLayout Spacing="10">
+
+                    <Label Text="{x:Static icons:FASolid.CircleCheck}"
+                           TextColor="White"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontFamily="FAS"
+                           FontSize="15"/>
+
+                    <Label Text="Aceitar"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           FontSize="15"/>
+
+                </HorizontalStackLayout>
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=SaveIconChangeCommand}"/>
+                </Border.GestureRecognizers>
+
+            </Border>
+
         </HorizontalStackLayout>
 
     </Grid>

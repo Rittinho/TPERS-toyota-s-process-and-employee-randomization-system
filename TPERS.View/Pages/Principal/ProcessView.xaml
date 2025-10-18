@@ -12,7 +12,7 @@
 
     <AbsoluteLayout>
 
-        <Border BackgroundColor="#363636"
+        <Border BackgroundColor="#363636" 
                 StrokeThickness="0"
                 StrokeShape="14"
                 AbsoluteLayout.LayoutBounds="0.973958333333333,0.5,0.9026041666666667,0.98"
@@ -23,10 +23,10 @@
                 <!--LeftContainer-->
                 <Border AbsoluteLayout.LayoutBounds="0,1,0.41200230813618,1"
                         AbsoluteLayout.LayoutFlags="All"
-                        StrokeShape="14"
+                        BackgroundColor="#4DA3FF"
                         StrokeThickness="0"
-                        Padding="10"
-                        BackgroundColor="#4DA3FF">
+                        StrokeShape="14"
+                        Padding="10">
 
                     <Grid RowDefinitions="Auto,*">
                         
@@ -54,48 +54,55 @@
                                         <DataTemplate>
 
                                             <Border StrokeShape="14"
-                                                    Padding="10"
+                                                    Padding="10,5,10,5"
                                                     StrokeThickness="0"
                                                     BackgroundColor="#323232">
 
-                                                <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="10">
+                                                <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="5">
 
                                                     <components:ProcessesIconComponent iconSize="50"
                                                                                        iconColor="{Binding icon.color}"
                                                                                        iconImage="{Binding icon.image}"/>
 
-                                                    <Label Text="{Binding title}"
-                                                           LineBreakMode="TailTruncation"
-                                                           Grid.Column="1"
-                                                           FontSize="25"
-                                                           FontAttributes="Bold"
-                                                           HorizontalOptions="Center"
-                                                           VerticalOptions="Center"/>
+                                                    <Border StrokeShape="14"
+                                                            Grid.Column="1"
+                                                            Padding="10"
+                                                            StrokeThickness="0"
+                                                            BackgroundColor="#222222">
+
+                                                        <Label Text="{Binding title}"
+                                                               LineBreakMode="TailTruncation"                                                     
+                                                               FontSize="25"
+                                                               FontAttributes="Bold"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center"/>
+
+                                                    </Border>
 
                                                     <Button Grid.Column="2"
-                                                            Padding="10"
+                                                            Padding="5"
                                                             FontSize="20"
                                                             TextColor="White"
                                                             FontFamily="FAS"
                                                             CornerRadius="9999"
                                                             BackgroundColor="Transparent"
-                                                            Command="{Binding Source={x:Reference Root}, Path=ProcessPopupCommand}"
+                                                            Command="{Binding Source={x:Reference Root}, Path=SowProcessCommand}"
                                                             CommandParameter="{Binding .}"
                                                             Text="{x:Static icons:FASolid.Eye}"/>
 
                                                     <Button Grid.Column="3"
-                                                            Padding="10"
+                                                            Padding="5"
                                                             FontSize="20"
                                                             TextColor="White"
                                                             FontFamily="FAS"
                                                             CornerRadius="9999"
                                                             BackgroundColor="Transparent"
-                                                            Command="{Binding Source={x:Reference Root}, Path=ProcessPopupCommand}"
+                                                            Command="{Binding Source={x:Reference Root}, Path=UpdateProcessCommand}"
                                                             CommandParameter="{Binding .}"
                                                             Text="{x:Static icons:FASolid.Pen}"/>
-                                                    
+
                                                     <Button Grid.Column="4"
-                                                            Padding="10"
+                                                            Padding="5"
                                                             FontSize="20"
                                                             TextColor="White"
                                                             FontFamily="FAS"
@@ -104,7 +111,7 @@
                                                             Command="{Binding Source={x:Reference Root}, Path=DeleteProcessCommand}"
                                                             CommandParameter="{Binding .}"
                                                             Text="{x:Static icons:FASolid.Trash}"/>
-                                                    
+
                                                 </Grid>
 
                                             </Border>
@@ -130,7 +137,7 @@
                     <Grid RowDefinitions="Auto,*,Auto" Padding="10">
 
                         <!--Titulo-->
-                        <Label Text="Adicionar novo processo" 
+                        <Label Text="Criar Processo" 
                                x:Name="TitleLabel"
                                FontSize="45" 
                                FontAttributes="Bold"
@@ -141,7 +148,7 @@
 
                             <!--Icone-->
                             <Border StrokeThickness="0"
-                                    Padding="10"
+                                    Padding="30"
                                     HorizontalOptions="Center"
                                     VerticalOptions="Center">
 
@@ -150,12 +157,12 @@
 
                                     <components:ProcessesIconComponent AbsoluteLayout.LayoutBounds="1,1,1,1"
                                                                        AbsoluteLayout.LayoutFlags="All"
-                                                                       x:Name="Icon"
+                                                                       x:Name="ProcessIcon"
                                                                        iconSize="250"/>
 
-                                    <Border AbsoluteLayout.LayoutBounds="1,0,0.3,0.3"
+                                    <Border AbsoluteLayout.LayoutBounds="0.95,0.95,0.3,0.3"
                                             AbsoluteLayout.LayoutFlags="All"
-                                            BackgroundColor="Gray"
+                                            BackgroundColor="#707070"
                                             StrokeThickness="0"
                                             StrokeShape="100">
 
@@ -164,7 +171,7 @@
                                                HorizontalOptions="Center"
                                                VerticalOptions="Center"
                                                Padding="5"
-                                               FontSize="20"
+                                               FontSize="40"
                                                TextColor="White"/>
 
                                     </Border>
@@ -172,7 +179,7 @@
                                 </AbsoluteLayout>
 
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding IconCustomizerPopup}"/>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=UpdateIconProcessCommand}"/>
                                 </Border.GestureRecognizers>
 
                             </Border>
@@ -187,7 +194,7 @@
 
                                     <Entry FontSize="15"
                                            Placeholder="Nome"
-                                           x:Name="titleLabel"
+                                           x:Name="ProcessTitleLabel"
                                            BackgroundColor="Transparent"
                                            FontAttributes="Bold"/>
 
@@ -202,7 +209,7 @@
                                             Placeholder="Descrição"
                                             MinimumHeightRequest="120"
                                             AutoSize="TextChanges"
-                                            x:Name="descriptionLabel"
+                                            x:Name="ProcessDescriptionLabel"
                                             BackgroundColor="Transparent"
                                             FontAttributes="Bold"/>
 
@@ -216,6 +223,7 @@
                         <Border Grid.Row="2" 
                                 x:Name="CreateButton"
                                 Padding="10"
+                                IsVisible="True"
                                 StrokeShape="14"
                                 StrokeThickness="0"
                                 BackgroundColor="#73ACE0">
@@ -239,13 +247,14 @@
                             </HorizontalStackLayout>
 
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SaveProcessCommand}"/>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=CreateProcessCommand}"/>
                             </Border.GestureRecognizers>
 
                         </Border>
 
                         <!--Edit-->
                         <Grid Grid.Row="2"
+                              IsVisible="False"
                               x:Name="EditButtons"
                               ColumnDefinitions="*,*"
                               ColumnSpacing="10">
@@ -275,7 +284,7 @@
                                 </HorizontalStackLayout>
 
                                 <Border.GestureRecognizers>
-                                    <!--<TapGestureRecognizer Command=""/>-->
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=CancelUpdateProcessCommand}"/>
                                 </Border.GestureRecognizers>
 
                             </Border>
@@ -306,7 +315,7 @@
                                 </HorizontalStackLayout>
 
                                 <Border.GestureRecognizers>
-                                    <!--<TapGestureRecognizer Command=""/>-->
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=SaveUpdateProcessCommand}"/>
                                 </Border.GestureRecognizers>
 
                             </Border>

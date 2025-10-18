@@ -64,7 +64,7 @@
         <HorizontalStackLayout x:Name="ActionButtons"
                                Grid.Row="2"
                                Spacing="10" 
-                               HorizontalOptions="End">
+                               HorizontalOptions="Center">
 
             <!--Retornar-->
             <Border Padding="10"

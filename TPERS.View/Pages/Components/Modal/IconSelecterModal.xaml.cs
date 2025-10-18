@@ -2,6 +2,7 @@
 using Microsoft.Maui.Controls.Shapes;
 using Syncfusion.Maui.Core;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using TPERS.View.Services.Icons;
 
 namespace TPERS.View.Pages.Components.Modal;
@@ -24,11 +25,15 @@ public partial class IconSelecterModal : Popup<IconPropertys>
         Color.FromArgb("00CED1")
     ];
 
-	public ObservableCollection<string> IconList { get; } = new ObservableCollection<string>();
-	public ObservableCollection<Color> ColorsList { get; } = new ObservableCollection<Color>();
+	public ObservableCollection<string> IconList { get; } = [];
+	public ObservableCollection<Color> ColorsList { get; } = [];
 
-	public string selectedIconCode;
-	public Color selectedColor = Color.FromArgb("FFFFFF");
+    public ICommand SaveIconChangeCommand => new Command(SaveButton);
+    public ICommand CancelChangeCommand => new Command(CancelButton);
+
+    public string selectedIconCode; 
+
+	public Color selectedColor;
 
     public IconSelecterModal(string iconImage ,Color color)
 	{
@@ -37,8 +42,11 @@ public partial class IconSelecterModal : Popup<IconPropertys>
 
         BindingContext = this;
 
-        icon.iconImage = iconImage;
-        icon.iconColor = color;
+        selectedIconCode = iconImage;
+        selectedColor = color;
+
+        icon.iconImage = selectedIconCode;
+        icon.iconColor = selectedColor;
     }
 
     private void GerateIcons()
@@ -52,27 +60,25 @@ public partial class IconSelecterModal : Popup<IconPropertys>
 
 	public void SelectIcon(object sender, SelectionChangedEventArgs e)
 	{
-		selectedIconCode = e.CurrentSelection.FirstOrDefault() as string;
+        if(e.CurrentSelection != null && e.CurrentSelection.Count > 0)
+            selectedIconCode = e.CurrentSelection[0] as string;
 
-        icon.iconImage = selectedIconCode;
+        icon.iconImage = selectedIconCode!;
     }
 
 	public void SelectColor(object sender, SelectionChangedEventArgs e)
 	{
-		selectedColor = (Color)e.CurrentSelection.FirstOrDefault();
-
-		icon.iconColor = selectedColor;
+        if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
+        {
+            if (e.CurrentSelection[0] is Color color)
+            {
+                selectedColor = color;
+                icon.iconColor = selectedColor;
+            }
+        }
     }
 
-    private void CancelButton(object sender, EventArgs e)
-    {
+    private async void CancelButton() => await CloseAsync();
 
-    }
-
-    private async void SaveButton(object sender, EventArgs e)
-    {
-        IconPropertys iconData = new IconPropertys(selectedIconCode, selectedColor);
-		
-        await CloseAsync(iconData);
-    }
+    private async void SaveButton() => await CloseAsync(new IconPropertys(selectedIconCode, selectedColor));
 }
