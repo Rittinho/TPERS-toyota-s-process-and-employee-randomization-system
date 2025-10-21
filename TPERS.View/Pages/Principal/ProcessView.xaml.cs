@@ -1,79 +1,89 @@
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Handlers;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using TPERS.View.Pages.Components.Modal;
 using TPERS.View.Services.Icons;
+using TPERS.View.Services.Injections.Contract;
 
 namespace TPERS.View.Pages.Principal;
 
 public partial class ProcessView : ContentPage
 {
+    private IVerificationServices verification;
     public ObservableCollection<ToyotaProcess> processList { get; } = [];
 
     private ToyotaProcess? currentProcessInEdit;
 
-    public ICommand UpdateIconProcessCommand => new Command(UpdateIcon);
-    public ICommand SowProcessCommand => new Command<ToyotaProcess>(SowProcess);
-    public ICommand CreateProcessCommand => new Command(CreateProcess);
+    public IAsyncRelayCommand UpdateIconProcessCommand => new AsyncRelayCommand(UpdateIcon);
+    public IAsyncRelayCommand SowProcessCommand => new AsyncRelayCommand<ToyotaProcess>(SowProcess);
+    public IAsyncRelayCommand CreateProcessCommand => new AsyncRelayCommand(CreateProcess);
     public ICommand UpdateProcessCommand => new Command<ToyotaProcess>(UpdateProcess);
     public ICommand SaveUpdateProcessCommand => new Command(SaveUpdate);
     public ICommand CancelUpdateProcessCommand => new Command(CancelUpdateProcess);
     public ICommand DeleteProcessCommand => new Command<ToyotaProcess>(DeleteProcess);
 
-    public ProcessView()
+    public ProcessView(IVerificationServices verificationServices)
     {
         InitializeComponent();
 
+        verification = verificationServices;
         ProcessIcon.iconColor = Colors.White;
         ProcessIcon.iconImage = FASolid.Asterisk;
 
         BindingContext = this;
     }
 
-    private async void UpdateIcon()
+    private async Task UpdateIcon()
     {
         IPopupResult<IconPropertys> result = await this.ShowPopupAsync<IconPropertys>(new IconSelecterModal(ProcessIcon.iconImage, ProcessIcon.iconColor),PopupOptions.Empty,CancellationToken.None);
 
-        if(result.WasDismissedByTappingOutsideOfPopup)
+        if (result.WasDismissedByTappingOutsideOfPopup)
+        {
+            await verification.WaringPopup("Alterações descartadas!", "As alterações foram perdidas", this);
             return;
+        }
 
         if (result.Result == null)
+        {
+            await verification.WaringPopup("Selecione um icone valido!","Por favor, refaça o icone", this);
             return;
+        }
 
         ProcessIcon.iconColor = result.Result!.color;
         ProcessIcon.iconImage = result.Result.image;
     }
 
-    private async void CreateProcess()
+    private async Task<bool> CreateProcess()
     {
-        string title = !string.IsNullOrEmpty(ProcessTitleLabel.Text)? ProcessTitleLabel.Text : "Sem nome";
-        string description = !string.IsNullOrEmpty(ProcessDescriptionLabel.Text) ? ProcessDescriptionLabel.Text : "Sem descrição";
+        ToyotaProcess newProcess = new (ProcessTitleLabel.Text, ProcessDescriptionLabel.Text, new IconPropertys(ProcessIcon.iconImage, ProcessIcon.iconColor));
 
-        if (VerifyIfThere())
+        if (verification.CheckSameProcess(newProcess, [..processList]))
         {
-            IPopupResult<bool> warningresult = await this.ShowPopupAsync<bool>(new ConfirmActionModal(
-                      new TokenAction(
-                          "Processo existente",
-                          "Verifique os existentes",
-                          false)),
-                          PopupOptions.Empty,
-                          CancellationToken.None);
-
-            if (warningresult.WasDismissedByTappingOutsideOfPopup || !warningresult.Result!)
-                return;
+            await verification.WaringPopup(WarningTokens.Existing,this);
+            return false;
         }
 
-        processList.Add(new ToyotaProcess(title, description, new IconPropertys(ProcessIcon.iconImage, ProcessIcon.iconColor)));
+        processList.Add(newProcess);
 
         ClearFilds();
+         
+        return true;
     }
 
-    private async void SowProcess(ToyotaProcess toyotaProcess)
+    private async Task SowProcess(ToyotaProcess? toyotaProcess)
     {
-        var modal = new ProcessDescriptionModal(toyotaProcess);
-        IPopupResult<ToyotaProcess> result = await this.ShowPopupAsync<ToyotaProcess>(modal, PopupOptions.Empty, CancellationToken.None);
+        if (toyotaProcess == null)
+        {
+            await verification.WaringPopup("Ocorreu um erro", "Ocorreu um erro ao exibir o processo, por favor, tente novamente", this);
+            return;
+        }
+
+        IPopupResult<ToyotaProcess> result = await this.ShowPopupAsync<ToyotaProcess>(new ProcessDescriptionModal(toyotaProcess), PopupOptions.Empty, CancellationToken.None);
 
         if (result.WasDismissedByTappingOutsideOfPopup)
             return;
@@ -81,15 +91,7 @@ public partial class ProcessView : ContentPage
 
     private async void DeleteProcess(ToyotaProcess toyotaProcess)
     {
-        IPopupResult<bool> result = await this.ShowPopupAsync<bool>(new ConfirmActionModal(
-            new TokenAction(
-                "Excluir processo?",
-                "Essa ação não tem volta!",
-                true)), 
-                PopupOptions.Empty, 
-                CancellationToken.None);
-
-        if (result.WasDismissedByTappingOutsideOfPopup || !result.Result!)
+        if (await verification.ConfirmPopup(WarningTokens.Delete, this))
             return;
 
         processList.Remove(toyotaProcess);
@@ -99,101 +101,60 @@ public partial class ProcessView : ContentPage
     {
         currentProcessInEdit = toyotaProcess;
 
-        CreateButton.IsVisible = false;
-        EditButtons.IsVisible = true;
-        TitleLabel.Text = "Editar Processo";
+        UpdateScreen();
 
         LoadFilds(toyotaProcess);
     }
 
     public async void SaveUpdate()
     {
-        if (VerifyChanged())
+        if (!CheckIfAnythingHasChanged())
         {
-            CreateButton.IsVisible = true;
-            EditButtons.IsVisible = false;
-
-            TitleLabel.Text = "Criar Processo";
+            UpdateScreen();
             ClearFilds();
-
             return;
         }
 
-        IPopupResult<bool> result = await this.ShowPopupAsync<bool>(new ConfirmActionModal(
-           new TokenAction(
-               "Alterar processo?",
-               "Essa ação não tem volta!",
-               true)),
-               PopupOptions.Empty,
-               CancellationToken.None);
-
-        if (result.WasDismissedByTappingOutsideOfPopup || !result.Result!)
+        if(await verification.ConfirmPopup(WarningTokens.Change, this))
             return;
 
-        CreateProcess();
+        if(await CreateProcess())
+            await verification.WaringPopup(WarningTokens.UpdateSuccess, this);
+
         processList.Remove(currentProcessInEdit!);
 
-        CreateButton.IsVisible = true;
-        EditButtons.IsVisible = false;
-
-        TitleLabel.Text = "Criar Processo";
+        CreateScreen();
     }
 
     public async void CancelUpdateProcess()
     {
 
-        if (VerifyChanged())
+        if (!CheckIfAnythingHasChanged())
         {
-            CreateButton.IsVisible = true;
-            EditButtons.IsVisible = false;
-
-            TitleLabel.Text = "Criar Processo";
+            CreateScreen();
             ClearFilds();
-
             return;
         }
 
-        IPopupResult<bool> result = await this.ShowPopupAsync<bool>(new ConfirmActionModal(
-            new TokenAction(
-                "Excluir alterarção?",
-                "Essa ação não tem volta!",
-                true)),
-                PopupOptions.Empty,
-                CancellationToken.None);
-
-        if (result.WasDismissedByTappingOutsideOfPopup || !result.Result!)
+        if (await verification.ConfirmPopup("Descartar alterações?","As alterações não ficam salvas!", this))
             return;
 
-        CreateButton.IsVisible = true;
-        EditButtons.IsVisible = false;
+        CreateScreen();
 
-        TitleLabel.Text = "Criar Processo";
         ClearFilds();
     }
 
-    private bool VerifyChanged()
+    //ferramentas-------------------------------------------
+    private bool CheckIfAnythingHasChanged()
     {
         if (ProcessTitleLabel.Text == currentProcessInEdit!.title &&
             ProcessDescriptionLabel.Text == currentProcessInEdit.description &&
             ProcessIcon.iconImage == currentProcessInEdit.icon.image &&
             ProcessIcon.iconColor == currentProcessInEdit.icon.color)
-            return true;
+            return false;
 
         else
-            return false;
-    }
-
-    private bool VerifyIfThere()
-    {
-        foreach (var process in processList)
-        {
-            if (process.title == ProcessTitleLabel.Text &&
-                process.description == ProcessDescriptionLabel.Text &&
-                process.icon.image == ProcessIcon.iconImage &&
-                process.icon.color == ProcessIcon.iconColor)
-                return true;
-        }
-        return false;
+            return true;
     }
 
     private void LoadFilds(ToyotaProcess toyotaProcess)
@@ -212,5 +173,21 @@ public partial class ProcessView : ContentPage
 
         ProcessDescriptionLabel.Text = string.Empty;
         ProcessTitleLabel.Text = string.Empty;
+    }
+
+    private void CreateScreen()
+    {
+        CreateButton.IsVisible = true;
+        EditButtons.IsVisible = false;
+
+        TitleLabel.Text = "Criar Processo";
+    }
+
+    private void UpdateScreen()
+    {
+        CreateButton.IsVisible = true;
+        EditButtons.IsVisible = false;
+
+        TitleLabel.Text = "Criar Processo";
     }
 }

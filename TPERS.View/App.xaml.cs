@@ -1,4 +1,5 @@
 ﻿using TPERS.View.Pages.Principal;
+using TPERS.View.Services.Injections.Contract;
 
 namespace TPERS.View
 {
@@ -11,7 +12,8 @@ namespace TPERS.View
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new NavigationPage(new ProcessView()));
+            var verificationServices = MauiProgram.ServiceProvider.GetRequiredService<IVerificationServices>();
+            return new Window(new NavigationPage(new ProcessView(verificationServices)));
             //return new Window(new AppShell());
         }
     }
